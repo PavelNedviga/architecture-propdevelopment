@@ -11,9 +11,58 @@
 ## Что нужно сделать
 
 1. Поднимите пустой Minikube. В этот раз вы будете работать без тестового приложения. Изучать код не нужно, поэтому сфокусируйтесь на подготовке скриптов. Они должны будут отражать решения, которые получились у вас по итогу работы над первыми тремя заданиями. Для этого вам понадобится пустой Minikube.
-2. Определите все роли и их полномочия при работе с Kubernetes. Мы подготовили шаблон таблицы. Заполните её: укажите там роли, их полномочия и группы пользователей, которые им соответствуют.
+2. Определите все роли и их полномочия при работе с Kubernetes. Мы подготовили [шаблон таблицы](Шаблон_проектная_работа_7спринт.md). Заполните её: укажите там роли, их полномочия и группы пользователей, которые им соответствуют.
 3. Подготовьте скрипты для создания пользователей. Рекомендуем создать не менее двух пользователей.
 4. Подготовьте скрипты, чтобы создать роли. Они должны соответствовать ролям из вашей таблицы.
 5. Подготовьте скрипты, чтобы связать пользователей с ролями.
 
 Когда вы выполните задание, у вас должно получиться три файла: по одному скрипту на третий, четвёртый и пятый пункты задания. Когда будете сдавать работу, загрузите заполненную таблицу и скрипты в директорию Task4 в рамках пул-реквеста.
+
+## Решение
+
+### RBAC настройка в Kubernetes
+
+Все пространства имен соответствуют доменным областям компании.
+
+Уровни доступа (минимум, который запросили):
+
+1. Priv-Secrets — может смотреть и редактировать секреты
+2. Ops-Config — настраивает объекты в своих namespace
+3. Read-Only — только для чтения
+
+Отмечу, что мы могли бы еще все это поделить между `dev`, `stage`, `prod` средой.
+
+| Роль | Права роли | Группы пользователей |
+| --- | --- | --- |
+| **cluster-admin** *(builtin ClusterRole)* | `*` на `*` (полный контроль кластера) | `infra-admins` (DevOps-лиды, SRE)                                           |
+| **cluster-secrets-viewer** *(ClusterRole)* | `get`, `list`, `watch` для `secrets`, `configmaps`, `serviceaccounts` во всех NS | `security-team` (специалист ИБ)                                             |
+| **priv-secrets-editor** *(ClusterRole)* | `get`, `list`, `watch`, `create`, `update`, `patch`, `delete` для `secrets` + `get/log/exec` для `pods` | `platform-ops` (операторы «Умного дома»)                                    |
+| **namespace-ops-config** *(Role, создаётся в каждом NS)* | `get`, `list`, `watch`, `create`, `update`, `patch`, `delete` для:<br>• `deployments`, `statefulsets`, `daemonsets`, `jobs`, `cronjobs`<br>• `services`, `ingresses`, `configmaps`, `persistentvolumeclaims`, `hpa`<br>• просмотр `pods/log` | `devops-<domain>` (Ops-команды доменов: `devops-sales`, `devops-tenant`, …) |
+| **namespace-dev** *(Role)* | `get`, `list`, `watch`, `create`, `update`, `patch` для `deployments`, `services`, `configmaps` **только** в своём NS;<br>нет доступа к `secrets`, `pods/exec` | `dev-<domain>` (разработчики продуктовых команд) |
+| **cluster-readonly** *(ClusterRole = builtin `view`)* | `get`, `list`, `watch` на все ресурсы, **кроме** `secrets` | `auditors`, `product-managers`, `business-analysts` |
+
+### Скрипты
+
+Инициализация по порядку:
+
+1. Создание пользователей: `./create-users/create-users.sh`
+2. Применение ролей и привязок: `kubectl apply -f roles/ -R`
+3. Применение RoleBindings и ClusterRoleBindings: `kubectl apply -f role-bindings/ -R`
+
+### Проверка доступа
+
+```bash
+# активируем контекст dev_sales
+kubectl config use-context dev_sales@minikube
+# попытка прочитать секрет в sales-ns (✅ разрешена)
+kubectl -n sales-ns get secrets
+# попытка изменить секрет (❌ forbidden)
+kubectl -n sales-ns delete secret some-secret
+
+# активируем security_analyst
+kubectl config use-context security_analyst@minikube
+# Просмотр секретов в любом NS (✅)
+kubectl -n tenant-ns get secrets
+# Попытка patch (❌ только viewer)
+kubectl -n tenant-ns patch secret ...
+```
