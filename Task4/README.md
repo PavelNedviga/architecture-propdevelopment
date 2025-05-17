@@ -46,23 +46,14 @@
 Инициализация по порядку:
 
 1. Создание пользователей: `./create-users/create-users.sh`
-2. Применение ролей и привязок: `kubectl apply -f roles/ -R`
-3. Применение RoleBindings и ClusterRoleBindings: `kubectl apply -f role-bindings/ -R`
+2. Добавляем пустые namspaces: `kubectl apply -f namespaces/ -R`
+3. Применение ролей и привязок: `kubectl apply -f roles/ -R`
+4. Применение RoleBindings и ClusterRoleBindings: `kubectl apply -f role-bindings/ -R`
 
 ### Проверка доступа
 
 ```bash
-# активируем контекст dev_sales
 kubectl config use-context dev_sales@minikube
-# попытка прочитать секрет в sales-ns (✅ разрешена)
-kubectl -n sales-ns get secrets
-# попытка изменить секрет (❌ forbidden)
-kubectl -n sales-ns delete secret some-secret
-
-# активируем security_analyst
-kubectl config use-context security_analyst@minikube
-# Просмотр секретов в любом NS (✅)
-kubectl -n tenant-ns get secrets
-# Попытка patch (❌ только viewer)
-kubectl -n tenant-ns patch secret ...
+kubectl auth can-i create deployment -n sales-ns     # получим: yes
+kubectl auth can-i get secrets    -n sales-ns        # получим: no
 ```
