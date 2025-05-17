@@ -1,0 +1,8 @@
+# namespace-sales.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sales-ns
+  labels:
+    project: sales
+    env: prod        # или staging / dev — по необходимости

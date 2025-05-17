@@ -1,0 +1,8 @@
+# namespace-sales.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tenant-ns
+  labels:
+    project: tenant
+    env: prod        # или staging / dev — по необходимости

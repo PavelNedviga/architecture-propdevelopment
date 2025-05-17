@@ -1,0 +1,164 @@
+{
+    "root": {
+        "data": {
+            "id": "d9udq1ta61k0",
+            "created": 1747073090454,
+            "text": "Безопасность данных",
+            "font-family": "arial,helvetica,sans-serif"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "d9udq6sj9c00",
+                    "created": 1747073101293,
+                    "text": "Публичные данные\nМаркетинговые материалы, онлайн‑витрина (описания объектов, фотографии, цены)",
+                    "layout": null,
+                    "font-family": "arial,helvetica,sans-serif"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d9udwkcaaao0",
+                            "created": 1747073600970,
+                            "text": "Риск: Искажение — Значительный — недостоверные данные приводят к потере доверия и сделок",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9udxfcpors0",
+                            "created": 1747073668476,
+                            "text": "Риск: Потеря — Значительный — недоступность витрины снижает продажи\"",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "d9udr8cpuw00",
+                    "created": 1747073183054,
+                    "text": "Внутренние данные\nВнутренние процедуры, документация, исходный код, агрегированные отчёты BI (без ПД)",
+                    "font-family": "arial,helvetica,sans-serif"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d9udzd45fvc0",
+                            "created": 1747073820333,
+                            "text": "Риск: Утечка — Значительный — конкурентное преимущество утрачено",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9udzdxst7s0",
+                            "created": 1747073822126,
+                            "text": "Риск: Потеря — Значительный — простои и затраты на восстановление",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9udzeqx0800",
+                            "created": 1747073823887,
+                            "text": "Риск: Некачественные данные — Значительный — ошибочные решения и расчёты",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "d9udr9xu1vs0",
+                    "created": 1747073186508,
+                    "text": "Конфиденциальные данные\nПДн клиентов и собственников (ФИО, контакты, паспорт), детали бронирования, договоры, платежи",
+                    "font-family": "arial,helvetica,sans-serif"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d9ue0pyutk00",
+                            "created": 1747073926675,
+                            "text": "Риск: Утечка — Критический — штрафы, репутация, закон 152‑ФЗ",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9ue0rwg68w0",
+                            "created": 1747073930884,
+                            "text": "Риск: Потеря — Критический — невозможность выполнить обязательства",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9ue0zx3mm80",
+                            "created": 1747073948337,
+                            "text": "Риск: Искажение — Критический — юридические споры, финансовые потери",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "d9udraib1a00",
+                    "created": 1747073187746,
+                    "text": "Секретные данные\nУчётные данные, API‑ключи, токены интеграций с госорганами, смарт‑замки, регистры бухгалтерии",
+                    "font-family": "arial,helvetica,sans-serif"
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "d9ue1bamewo0",
+                            "created": 1747073973099,
+                            "text": "Риск: Утечка — Критический — полный компрометирующий доступ к системам и объектам",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9ue1i2rdxs0",
+                            "created": 1747073987861,
+                            "text": "Риск: Потеря — Критический — остановка сервисов, длительное восстановление",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9ue1m3rcnk0",
+                            "created": 1747073996629,
+                            "text": "Риск: Искажение — Критический — нарушение безопасности объектов и финансов",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "d9ue1s52prs0",
+                            "created": 1747074009769,
+                            "text": "Риск: Некачественные данные — Значительный — сбои автоматизации доступа и расчётов",
+                            "font-family": "arial,helvetica,sans-serif"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "right",
+    "theme": "fresh-pink",
+    "version": "1.4.43"
+}
