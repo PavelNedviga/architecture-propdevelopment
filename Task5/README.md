@@ -46,3 +46,69 @@
     ```
 
 Когда всё будет готово, загрузите файл с сетевыми политиками в директорию Task5.
+
+## Решение
+
+0. Перезапустили minikube: `minikube delete && minikube start --cni=calico`
+
+1. Создаем `namespace`:
+
+   ```bash
+   kubectl create namespace app-ns
+   ```
+
+2. Создаем 4 pod+service (по одному порту 80/TCP)
+
+   ```bash
+    kubectl -n app-ns run front-end-app --image=nginx --port 80 --expose --labels role=front-end
+    kubectl -n app-ns run back-end-api-app --image=nginx --port 80 --expose --labels role=back-end-api
+    kubectl -n app-ns run admin-front-end-app --image=nginx --port 80 --expose --labels role=admin-front-end
+    kubectl -n app-ns run admin-back-end-api-app --image=nginx --port 80 --expose --labels role=admin-back-end-api
+   ```
+
+3. Применяем политики:
+
+    ```bash
+    kubectl apply -f traffic-isolation.yaml
+    ```
+
+4. Проверяем: `kubectl -n app-ns run test-$RANDOM --rm -i --restart=Never --image=alpine --labels role=front-end -- wget -qO- --timeout=2 http://back-end-api-app && echo "✅ allowed"`
+
+    ```bash
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <title>Welcome to nginx!</title>
+    <style>
+    html { color-scheme: light dark; }
+    body { width: 35em; margin: 0 auto;
+    font-family: Tahoma, Verdana, Arial, sans-serif; }
+    </style>
+    </head>
+    <body>
+    <h1>Welcome to nginx!</h1>
+    <p>If you see this page, the nginx web server is successfully installed and
+    working. Further configuration is required.</p>
+
+    <p>For online documentation and support please refer to
+    <a href="http://nginx.org/">nginx.org</a>.<br/>
+    Commercial support is available at
+    <a href="http://nginx.com/">nginx.com</a>.</p>
+
+    <p><em>Thank you for using nginx.</em></p>
+    </body>
+    </html>
+    pod "test-6137" deleted
+    ✅ allowed
+    ```
+
+    Проверяем: `kubectl -n app-ns run test-$RANDOM --rm -i --restart=Never --image=alpine --labels role=front-end -- wget -qO- --timeout=2 http://admin-back-end-api-app || echo "🚫 blocked as expected"`
+
+    ```bash
+    Вывод:
+    If you don't see a command prompt, try pressing enter.
+    wget: download timed out
+    pod "test-3169" deleted
+    pod app-ns/test-3169 terminated (Error)
+    🚫 blocked as expected
+    ```
